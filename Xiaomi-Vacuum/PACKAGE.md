@@ -9,9 +9,10 @@ xiaomi_vacuum_token: xxxxxxxxxxxxxxxxxxxx #Token precedentemente ricavato da Mi 
 xiaomi_vacuum_resource_map: http://192.168.1.132/api/remote/map
 ```
 2. Copiare le immagini presenti nella cartella [image](image/) nella cartella /config/www/image di Home Assistant
-3. Per visualizzare una scheda personalizzata in lovelace, utilizzare il [seguente codice](ui-lovelace.yaml) integrandolo nel proprio file ui-lovelace.yaml. 
+3. Copiare il file [entity-attributes-card.js](entity-attributes-card.js) nella cartella /config/www di Home Assistant
+4. Per visualizzare una scheda personalizzata in lovelace, utilizzare il [seguente codice](ui-lovelace.yaml) integrandolo nel proprio file ui-lovelace.yaml. 
 **[importante avere attiva la modalità yaml di lovelace!!](https://www.home-assistant.io/lovelace/yaml-mode/)**
-4. Per utilizzare la pulizia a zone _ottimizzata_ installare il custom_component presente [qui](https://github.com/home-assistant/home-assistant/pull/19777) finche la Pull request non verrà approvata.
+5. Per utilizzare la pulizia a zone _ottimizzata_ installare il custom_component presente [qui](https://github.com/home-assistant/home-assistant/pull/19777) finche la Pull request non verrà approvata.
 
 
 ## Il risultato dovrebbe essere questo:

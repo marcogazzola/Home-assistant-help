@@ -1,3 +1,6 @@
+resources:
+  - url: /local/entity-attributes-card.js?v=4
+    type: js
 title: HomeAssistant
 views:
   - title: Xiaomi Vacuum
