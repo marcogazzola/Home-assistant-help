@@ -14,4 +14,4 @@
    ```
 La guida completa è disponibile [qui](Dropbox-Backup/HomeAssistant-Backup-Dropbox.pdf).
 
-Il package [backupdropbox.yaml](Dropbox-Backup/backupdropbox.yaml) contiene un esempio di configurazione completa.
+Il package [backupdropbox.yaml](https://github.com/marcogazzola/Home-assistant-help/https://github.com/marcogazzola/Home-assistant-help/Dropbox-Backup/backupdropbox.yaml) contiene un esempio di configurazione completa.
