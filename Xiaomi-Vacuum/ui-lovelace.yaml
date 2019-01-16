@@ -1,0 +1,321 @@
+title: HomeAssistant
+views:
+  - title: Xiaomi Vacuum
+    id: xiaomi-vacuum
+    icon: mdi:robot-vacuum
+    cards:
+      - type: vertical-stack
+        cards:
+          - type: picture-elements
+            image: /local/image/vacuum_card_2.png
+            elements:
+              - type: image
+                entity: input_boolean.vacuum_zone_settings
+                tap_action: 
+                  action: toggle
+                hold_action: 
+                  action: toggle
+                image: /local/image/map.png
+                state_image:
+                  'on': /local/image/map.png
+                state_filter:
+                  'on': brightness(200%) saturate(1.8)
+                  'off': brightness(80%) saturate(0.8)
+                style:
+                  top: 90%
+                  left: 65%
+                  width: 5%
+              - type: icon
+                icon: mdi:information
+                tap_action: 
+                  action: more-info
+                entity: vacuum.xiaomi_vacuum
+                style:
+                  top: 90%
+                  left: 75%
+              - type: icon
+                icon: mdi:bell-ring
+                tap_action: 
+                  action: call-service
+                  service: vacuum.locate
+                entity: vacuum.xiaomi_vacuum
+                style:
+                  top: 90%
+                  left: 55%
+                  "--paper-item-icon-color": rgb(115, 122, 130)
+              - type: icon
+                tap_action: 
+                  action: call-service
+                  service: vacuum.return_to_base
+                icon: mdi:home
+                entity: vacuum.xiaomi_vacuum
+                style:
+                  top: 90%
+                  left: 45%
+                  "--paper-item-icon-color": rgb(115, 122, 130)
+              - type: icon
+                icon: mdi:play
+                tap_action: 
+                  action: call-service
+                  service: vacuum.start
+                entity: vacuum.xiaomi_vacuum
+                style:
+                  top: 90%
+                  left: 35%
+                  "--paper-item-icon-color": rgb(115, 122, 130)
+              - type: icon
+                icon: mdi:stop
+                tap_action: 
+                  action: call-service
+                  service: vacuum.stop
+                entity: vacuum.xiaomi_vacuum
+                style:
+                  top: 90%
+                  left: 25%
+                  "--paper-item-icon-color": rgb(115, 122, 130)
+              - type: state-label
+                entity: sensor.vacuum_operation
+                style:
+                  top: 10%
+                  left: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-color: rgb(34, 154, 210)
+                  background-color: rgb(54, 65, 78)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_accessories
+                style:
+                  top: 10%
+                  right: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-color: rgb(34, 154, 210)
+                  background-color: rgb(54, 65, 78)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_main_brush
+                style:
+                  top: 30%
+                  right: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-right-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_side_brush
+                style:
+                  top: 45%
+                  right: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-right-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_filter
+                style:
+                  top: 60%
+                  right: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-right-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_sensor
+                style:
+                  top: 75%
+                  right: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-right-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_status
+                style:
+                  top: 30%
+                  left: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-left-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_battery
+                style:
+                  top: 45%
+                  left: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-left-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_weekdays
+                style:
+                  top: 75%
+                  left: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-left-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: state-label
+                entity: sensor.vacuum_weekend
+                style:
+                  top: 60%
+                  left: 1%
+                  color: rgb(255, 255, 255)
+                  transform: translate(0%,-50%)
+                  pointer-events: none
+                  text-shadow: 1px 1px black
+                  font-family: Trebuchet MS
+                  font-size: 90%
+                  font-weight: bold
+                  border-left-style: solid
+                  border-color: rgb(34, 154, 210)
+                  opacity: 0.8
+              - type: image
+                entity: automation.vacuum_schedule_cleaning_on_weekdays
+                tap_action: 
+                  action: toggle
+                image: /local/image/timer-off.png
+                state_image:
+                  'on': /local/image/timer.png
+                state_filter:
+                  'on': brightness(200%) saturate(1.8)
+                  'off': brightness(80%) saturate(0.8)
+                style:
+                  top: 75%
+                  left: 25%
+                  width: 5%
+              - type: image
+                entity: automation.vacuum_schedule_cleaning_on_weekends
+                tap_action: 
+                  action: toggle
+                image: /local/image/timer-off.png
+                state_image:
+                  'on': /local/image/timer.png
+                state_filter:
+                  'on': brightness(200%) saturate(1.8)
+                  'off': brightness(80%) saturate(0.8)
+                style:
+                  top: 60%
+                  left: 22%
+                  width: 5%
+          - type: conditional
+            conditions:
+              - entity: automation.vacuum_schedule_cleaning_on_weekdays
+                state: "on"
+            card:
+              type: entities
+              entities:
+                - sensor.vacuum_start_time_weekdays
+                - input_number.vacuum_start_hour_weekdays
+                - input_number.vacuum_start_minutes_weekdays
+          - type: conditional
+            conditions:
+              - entity: automation.vacuum_schedule_cleaning_on_weekends
+                state: "on"
+            card:
+              type: entities
+              entities:
+                - sensor.vacuum_start_time_weekend
+                - input_number.vacuum_start_hour_weekend
+                - input_number.vacuum_start_minutes_weekend
+          - type: conditional
+            conditions:
+              - entity: input_boolean.vacuum_zone_settings
+                state: "on"
+            card:
+              type: vertical-stack
+              cards:
+                - type: entities
+                  entities:
+                    - input_select.vacuum_fan_speed_list
+                    - input_number.vacuum_passes
+                    - input_select.vacuum_zone
+                - type: custom:entity-attributes-card
+                  entity: vacuum.xiaomi_vacuum
+                  heading_name: Status
+                  heading_state: Valore
+                  filter:
+                    include:
+                      - key: vacuum.xiaomi_vacuum.cleaning_time
+                        name: Tempo di pulizia (ultimo)
+                        unit: minuti
+                      - key: vacuum.xiaomi_vacuum.cleaned_area
+                        name: Superfice pulita (ultimo)
+                        unit: metri
+                      - key: vacuum.xiaomi_vacuum.cleaning_count
+                        name: Cicli di pulizia (totale)
+                      - key: vacuum.xiaomi_vacuum.total_cleaning_time
+                        name: Tempo di pulizia (totale)
+                        unit: minuti
+                      - key: vacuum.xiaomi_vacuum.total_cleaned_area
+                        name: Superfice pulita (totale)
+                        unit: metri
+                - type: custom:entity-attributes-card
+                  entity: vacuum.xiaomi_vacuum
+                  heading_name: Status
+                  heading_state: Valore
+                  filter:
+                    include:
+                      - key: vacuum.xiaomi_vacuum.do_not_disturb
+                        name: Non disturbare
+                      - key: vacuum.xiaomi_vacuum.do_not_disturb_start
+                        name: Non disturbare inizio
+                      - key: vacuum.xiaomi_vacuum.do_not_disturb_end
+                        name: Non disturbare fine
+          - type: picture-entity
+            entity: camera.vacuum_map
+            show_name: false
+            show_state: false

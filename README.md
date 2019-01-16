@@ -7,3 +7,5 @@ Creazione di una snapshot completa e sincronizzazione su dropbox.
 ## [Switch Always On](Switch-Always-On/README.md)
 Package per gestire l'accensione o lo spegnimento di uno switch.
 
+## [Xiaomi Vacuum](Xiaomi-Vacuum/README.md)
+Integrazione di [Xiaomi Vacuum](https://www.mi.com/roomrobot/) in Home Assistant
