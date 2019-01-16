@@ -16,6 +16,4 @@ xiaomi_vacuum_resource_map: http://192.168.1.132/api/remote/map
 
 ## Il risultato dovrebbe essere questo:
 
-<div style="text-align:center">
-<img src="guida/vacuum_lovelace.jpg" width="40%">
-</div>
+<div style="text-align:center"><img src="guida/vacuum_lovelace.jpg" width="40%"></div>

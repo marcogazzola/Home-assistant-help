@@ -14,10 +14,11 @@
 Per recuperare il token del nostro Vacuum seguire i seguenti passaggi:
 1. Scaricare l'utlima versione di _MI Home_ disponibile sul [Repository di xCape](https://t.me/xCrepository)
 2. Collegare il vacuum all'applicazione Mi Home
-3. Tap su impostazioni ![Map](guida/map.jpg)
-4. Tap su General settings ![General Settings](guida/settings.jpg)
-5. Tap su **Informazioni rete** ![Informazioni di rete](guida/general.jpg)
-6. Copiare il token presente ![Token](guida/network.jpg)
+3. Tap su impostazioni 
+<div style="text-align:center"><img src="guida/map.jpg" width="40%"></div>
+4. Tap su General settings<div style="text-align:center"><img src="guida/settings.jpg" width="40%"></div>
+5. Tap su Informazioni rete<div style="text-align:center"><img src="guida/general.jpg" width="40%"></div>
+6. Copiare il token presente<div style="text-align:center"><img src="guida/network.jpg" width="40%"></div>
 
 #### Metodo alternativo
 Seguire la guida disponibile [qui](https://www.home-assistant.io/components/vacuum.xiaomi_miio/#retrieving-the-access-token)
