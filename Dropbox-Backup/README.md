@@ -12,5 +12,6 @@
        input:
          command: upload
    ```
-La guida completa è disponibile [qui](Backup su dropbox/HomeAssistant - Backup - Dropbox.pdf)
-Il package [backupdropbox.yaml] (Backup su dropbox/backupdropbox.yaml) contiene un esempio di configurazione completa.
+La guida completa è disponibile [qui](Dropbox-Backup/HomeAssistant-Backup-Dropbox.pdf).
+
+Il package [backupdropbox.yaml](Dropbox-Backup/backupdropbox.yaml) contiene un esempio di configurazione completa.
