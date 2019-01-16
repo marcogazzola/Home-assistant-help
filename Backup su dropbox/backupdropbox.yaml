@@ -1,0 +1,70 @@
+homeassistant:
+    customize:
+        automation.hassio_backup:
+            icon: mdi:dropbox
+            
+input_select:
+  backup_day:
+    name: Giorno di Backup
+    options:
+      - "Tutti i giorni"
+      - "Lun - Mer - Ven"
+      - "Lun - Ven"
+      - "Sabato"
+      - "Domenica"
+      - "Mai"
+    initial: "Lun - Ven"
+    icon: mdi:calendar
+ 
+input_datetime:
+  backup_time:
+    name: "Orario Backup"
+    has_date: false
+    has_time: true
+    initial: '02:00'
+    
+automation: 
+  - alias: Hassio backup
+    trigger:
+      platform: template
+      value_template: >-
+        {{ states('sensor.time') == (states.input_datetime.backup_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}
+    condition:
+    - condition: template
+      value_template: >-
+        {% set today = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'][now().weekday()] %}
+        {% if is_state("input_select.backup_day", "Tutti i giorni") %} true
+        {% elif (is_state("input_select.backup_day", "Lun - Ven") and today in ["Monday","Friday"]) %} true
+        {% elif is_state("input_select.backup_day", "Sabato") and today in ["Saturday"] %} true
+        {% elif is_state("input_select.backup_day", "Domenica") and today in ["Sunday"] %} true
+        {% elif is_state("input_select.backup_day", "Lun - Mer - Ven") and today in ["Monday","Wednesday","Friday"] %} true
+        {% else %} false
+        {% endif %}    
+    action:
+      - service: hassio.snapshot_full
+        data_template:
+          name: Backup automatico {{ now().strftime('%Y-%m-%d') }} 
+      - service: hassio.addon_stdin
+        data:
+          addon: 7be23ff5_dropbox_sync
+          input:
+            command: upload
+      - service: notify.ha_notifiche
+        data_template:
+          message: 'Creato backup completo automatico: Full snapshot {{ now().strftime(''%Y-%m-%d'') }}'
+
+group:
+  backup:
+    name: Backup Dropbox
+    view: no
+    entities:
+      - automation.hassio_backup
+      - input_datetime.backup_time
+      - input_select.backup_day
+
+notify:
+  - name: Vacuum_all
+    platform: group
+    services:
+      - service: html5
+      - service: telegram
