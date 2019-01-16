@@ -1,0 +1,211 @@
+input_boolean:
+  luce_alwayson_attiva:
+    name: GENERALE - attiva luce sempre accesa nella fascia oraria
+    initial: 'on'
+  luce_alwayson_weekend:
+    name: attiva luce sempre accesa nella fascia oraria nei weekend
+    initial: 'on'
+  luce_alwayson_workdays:
+    name: attiva luce sempre accesa nella fascia oraria nei giorni lavorativi
+    initial: 'on'
+  test: #rimuovere!!!
+    name: test pkg luci new
+    initial: 'off'
+    icon: mdi:car
+
+input_datetime:
+  luce_alwayson_weekend_on:
+    name: orario attivazione weekend
+    has_date: false
+    has_time: true
+  luce_alwayson_weekend_off:
+    name: orario spegnimento weekend
+    has_date: false
+    has_time: true
+  luce_alwayson_workdays_on:
+    name: orario attivazione workdays
+    has_date: false
+    has_time: true
+  luce_alwayson_workdays_off:
+    name: orario spegnimento workdays
+    has_date: false
+    has_time: true
+    
+binary_sensor:
+  - platform: workday
+    country: IT
+    workdays: [mon, tue, wed, thu, fri]
+  - platform: template
+    sensors:
+      turnon_weekend:
+        friendly_name: "weekend - luce da accendere"
+        entity_id:
+          - binary_sensor.workday_sensor
+          - input_boolean.luce_alwayson_weekend
+          - input_datetime.luce_alwayson_weekend_on
+          - input_datetime.luce_alwayson_weekend_off
+        value_template: >-
+            {{ (states("input_boolean.luce_alwayson_weekend") == "on" and states("binary_sensor.workday_sensor") == "off" 
+            and states("sensor.time") >= state_attr("input_datetime.luce_alwayson_weekend_on","timestamp") | int | timestamp_custom("%H:%M", False)
+            and ((
+                    state_attr("input_datetime.luce_alwayson_weekend_off","timestamp") | int | timestamp_custom("%H:%M", False) > state_attr("input_datetime.luce_alwayson_weekend_on","timestamp") | int | timestamp_custom("%H:%M", False)
+                    and states("sensor.time") < state_attr("input_datetime.luce_alwayson_weekend_off","timestamp") | int | timestamp_custom("%H:%M", False)
+                ) or (
+                    state_attr("input_datetime.luce_alwayson_weekend_off","timestamp") | int | timestamp_custom("%H:%M", False) < state_attr("input_datetime.luce_alwayson_weekend_on","timestamp") | int | timestamp_custom("%H:%M", False)
+                    and (0 | int | timestamp_custom("%H:%M", False)) < state_attr("input_datetime.luce_alwayson_weekend_off","timestamp") | int | timestamp_custom("%H:%M", False)
+                )
+                )
+            ) == true }}
+      turnon_workdays:
+        friendly_name: "workdays - luce da accendere"
+        entity_id:
+          - binary_sensor.workday_sensor
+          - input_boolean.luce_alwayson_workdays
+          - input_datetime.luce_alwayson_workdays_on
+          - input_datetime.luce_alwayson_workdays_off
+        value_template: >-
+            {{ (states("input_boolean.luce_alwayson_workdays") == "on" and states("binary_sensor.workday_sensor") == "on" 
+            and states("sensor.time") >= state_attr("input_datetime.luce_alwayson_workdays_on","timestamp") | int | timestamp_custom("%H:%M", False)
+            and ((
+                    state_attr("input_datetime.luce_alwayson_workdays_off","timestamp") | int | timestamp_custom("%H:%M", False) > state_attr("input_datetime.luce_alwayson_workdays_on","timestamp") | int | timestamp_custom("%H:%M", False)
+                    and states("sensor.time") < state_attr("input_datetime.luce_alwayson_workdays_off","timestamp") | int | timestamp_custom("%H:%M", False)
+                ) or (
+                    state_attr("input_datetime.luce_alwayson_workdays_off","timestamp") | int | timestamp_custom("%H:%M", False) < state_attr("input_datetime.luce_alwayson_workdays_on","timestamp") | int | timestamp_custom("%H:%M", False)
+                    and (0 | int | timestamp_custom("%H:%M", False)) < state_attr("input_datetime.luce_alwayson_workdays_off","timestamp") | int | timestamp_custom("%H:%M", False)
+                )
+                )
+            ) == true }}
+switch:
+  - platform: template
+    switches:
+     test_luci:
+        value_template: "{{ is_state('input_boolean.test', 'on') }}"
+        turn_on:
+          service: input_boolean.turn_on
+          data:
+            entity_id: input_boolean.test
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.test  
+
+automation:
+  - alias: luce alwayson ON
+    initial_state: 'on'
+    trigger:
+# entità da monitorare
+    - platform: state
+      entity_id: switch.test_luci
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: input_boolean.luce_alwayson_attiva
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.luce_alwayson_weekend
+      to: 'on'
+    - platform: state
+      entity_id: input_boolean.luce_alwayson_workdays
+      to: 'on'
+#workdays
+    - platform: state
+      entity_id: binary_sensor.turnon_workdays
+      to: 'on'
+#weekend
+    - platform: state
+      entity_id: binary_sensor.turnon_weekend
+      to: 'on'
+    condition:
+    - condition: state
+      entity_id: input_boolean.luce_alwayson_attiva
+      state: 'on'
+    - condition: state
+      entity_id: switch.test_luci
+      state: 'off'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: binary_sensor.turnon_weekend
+        state: 'on'
+      - condition: state
+        entity_id: binary_sensor.turnon_workdays
+        state: 'on'
+    action:
+    - service: persistent_notification.create
+      data:
+        message: "la luce è stata accesa"
+        title: "Accendi luce alway on"    
+    - service: switch.turn_on
+      entity_id: switch.test_luci
+
+
+  - alias: luce alwayson OFF
+    initial_state: 'on'
+    trigger:
+# entità da monitorare
+    - platform: state
+      entity_id: switch.test_luci
+    - platform: homeassistant
+      event: start
+    - platform: state
+      entity_id: input_boolean.luce_alwayson_attiva
+      to: 'off'
+    - platform: state
+      entity_id: input_boolean.luce_alwayson_weekend
+      to: 'off'
+    - platform: state
+      entity_id: input_boolean.luce_alwayson_workdays
+      to: 'off'
+#workdays
+    - platform: state
+      entity_id: binary_sensor.turnon_workdays
+      to: 'off'
+#weekend
+    - platform: state
+      entity_id: binary_sensor.turnon_weekend
+      to: 'off'
+    condition:
+    - condition: state
+      entity_id: switch.test_luci
+      state: 'on'
+    - condition: or
+      conditions:
+      - condition: state
+        entity_id: input_boolean.luce_alwayson_attiva
+        state: 'off'
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: binary_sensor.turnon_weekend
+          state: 'off'
+        - condition: state
+          entity_id: binary_sensor.turnon_workdays
+          state: 'off'
+    action:
+    - service: persistent_notification.create
+      data:
+        message: "la luce è stata spenta"
+        title: "Spegni luce alway on"    
+    - service: switch.turn_off
+      entity_id: switch.test_luci
+
+
+group:
+  test:
+    name: Test automazioni switch Always ON
+    entities:
+      - switch.test_luci
+      - input_boolean.test
+      - input_boolean.luce_alwayson_attiva
+      - input_boolean.luce_alwayson_weekend
+      - input_boolean.luce_alwayson_workdays
+      - input_datetime.luce_alwayson_weekend_on
+      - input_datetime.luce_alwayson_weekend_off
+      - input_datetime.luce_alwayson_workdays_on
+      - input_datetime.luce_alwayson_workdays_off
+      - sensor.time
+      - binary_sensor.workday_sensor
+      - binary_sensor.turnon_weekend
+      - binary_sensor.turnon_workdays
+
+
