@@ -2,7 +2,7 @@
 
 # 1. [Package per l'integrazione di Xiaomi Vacuum in Home Assistant](PACKAGE.md)
 # 2. [Come recuperare il token](#Come-recuperare-il-token)
-## 2.1 [Android by xCape](#Android-con-Mi-Home-modificata-da-xCape)
+## 2.1 [MiHome mod by xCape (android)](#MiHome-mod-by-xCape-(android))
 ## 2.2 [Metodo alternativo](#Metodo-alternativo)
 # 3. [Permessi di root su Xioami vacuum](#Permessi-di-root-su-Xioami-vacuum)
 # 4. [Utilizzo della mappa in tempo reale in Home Assistant](#Utilizzo-della-mappa-in-tempo-reale-in-Home-Assistant)
@@ -10,7 +10,7 @@
 ## 4.2 [Da fare in Home Assistant](#Da-fare-in-Home-Assistant)
 
 ## Come recuperare il token
-#### Android con Mi Home modificata da xCape
+#### MiHome mod by xCape (android)
 Per recuperare il token del nostro Vacuum seguire i seguenti passaggi:
 1. Scaricare l'utlima versione di _MI Home_ disponibile sul [Repository di xCape](https://t.me/xCrepository)
 2. Collegare il vacuum all'applicazione Mi Home
@@ -18,6 +18,8 @@ Per recuperare il token del nostro Vacuum seguire i seguenti passaggi:
 4. Tap su General settings<div style="text-align:center"><img src="guida/settings.jpg" width="40%"></div>
 5. Tap su Informazioni rete<div style="text-align:center"><img src="guida/general.jpg" width="40%"></div>
 6. Copiare il token presente<div style="text-align:center"><img src="guida/network.jpg" width="40%"></div>
+##### Token su file
+Utilizzando l'app MiHome mod by xCape, viene generato il file devices.ini in _sdcard/plugin/_ con tutte le informazioni dei dispositivi collegati ( token, ip, mac, nome, modello..)
 
 #### Metodo alternativo
 Seguire la guida disponibile [qui](https://www.home-assistant.io/components/vacuum.xiaomi_miio/#retrieving-the-access-token)
