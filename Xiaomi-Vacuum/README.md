@@ -2,7 +2,7 @@
 
 # 1. [Package per l'integrazione di Xiaomi Vacuum in Home Assistant](PACKAGE.md)
 # 2. [Come recuperare il token](#Come-recuperare-il-token)
-## 2.1 [MiHome mod by xCape (android)](#MiHome-mod-by-xCape-(android))
+## 2.1 [MiHome mod by xCape (android)](#MiHome-mod-by-xCape-android)
 ## 2.2 [Metodo alternativo](#Metodo-alternativo)
 # 3. [Permessi di root su Xioami vacuum](#Permessi-di-root-su-Xioami-vacuum)
 # 4. [Utilizzo della mappa in tempo reale in Home Assistant](#Utilizzo-della-mappa-in-tempo-reale-in-Home-Assistant)
