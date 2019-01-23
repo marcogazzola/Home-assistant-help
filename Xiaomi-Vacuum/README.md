@@ -31,6 +31,11 @@ Per ottenere i permessi di root sul vacuum, seguire la guida descritta [qui](htt
 #### Da fare sul vacuum
 Per permettere l'utilizzo della mappa in tempo reale, utilizzare la procedure descritta [qui](https://github.com/Hypfer/Valetudo/blob/master/README.md)
 
+## ATTENZIONE:
+### dopo ogni aggiornamento del vacuum bisogna ripetere le operazioni di root e di valetudo
+
+
+
 #### Da fare in Home Assistant
 Creare un'entità sensor _rest_ con cui prelevare il nome dell'immage da scaricaricare dal vacuum e un'entità Camera _generic_ indicando l'url delle api messe a disposizione dal tool [Valetudo](#Da-fare-sul-vacuum)
 ```yaml
