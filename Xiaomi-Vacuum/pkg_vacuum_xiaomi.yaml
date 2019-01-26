@@ -409,7 +409,7 @@ script:
   vacuum_alert_start:
     alias: Vacuum alert start
     sequence:
-    - service: notify.Vacuum_all
+    - service: notify.vacuum_all
       data_template:
         title: "Alert Casa"
         message: "Il robot ha iniziato la pulizia della zona: {{ states.input_select.vacuum_zone.state | lower }}."
@@ -429,7 +429,7 @@ script:
   vacuum_alert_pause:
     alias: Vacuum alert pausa
     sequence:
-    - service: notify.Vacuum_all
+    - service: notify.vacuum_all
       data_template:
         title: "Alerta Casa"
         message: "L'aspirapolvere ha smesso di pulire la zona: {{ states.input_select.vacuum_zone.state | lower }}. {% if 'error' in states.vacuum.xiaomi_vacuum.state %}Codice di errore: {{ states.vacuum.xiaomi_vacuum.attributes.error }}.{% else %}{% endif %}"
@@ -451,7 +451,7 @@ script:
     sequence:
     - condition: template
       value_template: "{% if is_state('input_select.vacuum_zone', 'Scegli la zona') %}False{% else %}True{% endif %}"
-    - service: notify.Vacuum_all
+    - service: notify.vacuum_all
       data_template:
         title: "Alerta Casa"
         message: "Il robot ha terminato la pulizia della zona {{ states.input_select.vacuum_zone.state | lower }}. Puliti {{ states.vacuum.xiaomi_vacuum.attributes.cleaned_area }} metri quadri in {{ states.vacuum.xiaomi_vacuum.attributes.cleaning_time }} minuti e ora si sta caricando"
@@ -471,7 +471,7 @@ script:
   vacuum_alert_error:
     alias: Vacuum alert error
     sequence:
-    - service: notify.Vacuum_all
+    - service: notify.vacuum_all
       data_template:
         title: "Alerta Casa"
         message: "L'aspirapolvere si è fermato e ha segnalato un errore durante la pulizia della zona {{ states.input_select.vacuum_zone.state | lower }}."
@@ -523,7 +523,7 @@ camera:
 ### Notify
 ########################################################################
 notify:
-  - name: Vacuum_all
+  - name: vacuum_all
     platform: group
     services:
       - service: html5
