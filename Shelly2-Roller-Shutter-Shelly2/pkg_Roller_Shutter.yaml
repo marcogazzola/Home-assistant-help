@@ -1,0 +1,72 @@
+cover:
+  - platform: mqtt
+    name: "Tapparella cucina shelly"
+    state_topic: "shellies/shellyswitch-55C817/roller/0"   
+    command_topic: "shellies/shellyswitch-55C817/roller/0/command"  
+    payload_open: "open"
+    payload_close: "close"
+    payload_stop: "stop"
+    state_open: "open"
+    state_closed: "close"
+    retain: false
+    optimistic: false
+    qos: 0
+    position_open: 100
+    position_closed: 0
+    value_template: '{{ value.x }}'
+
+sensor:
+  - platform: mqtt
+    state_topic: "shellies/shellyswitch-55C817/roller/0/pos"
+    name: "Posizione Tapparella"
+
+input_number:
+  pos_shelly2:
+    name: pos shelly2
+#    initial: 0
+    min: 0
+    max: 100
+    step: 1
+
+input_boolean:
+  attiva_alza_tapparella:
+    name: attivazione alza tapparella
+    initial: true
+input_datetime:
+  alza_tapparella_time:
+    name: Ora alza tapparella cucina
+    has_date: false
+    has_time: true
+    initial: 07:35
+
+automation:
+  - trigger:
+      platform: mqtt
+      topic: "shellies/shellyswitch-55C817/roller/0/pos"
+    action:
+      service: input_number.set_value
+      data_template:
+        entity_id: input_number.pos_shelly2
+        value: "{{ trigger.payload }}"
+
+  - alias: 'Alza la tapparella alla mattina'
+    initial_state: 'on'
+    trigger:
+      platform: template
+      value_template: "{{ states('sensor.time') == (states.input_datetime.alza_tapparella_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+    condition:
+      - condition: time
+        weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+      - condition: state
+        entity_id: input_boolean.attiva_alza_tapparella
+        state: 'on'
+    action:
+      - service: mqtt.publish
+        data:
+          topic: "shellies/shellyswitch-55C817/roller/0/command/pos"
+          payload: "95"
