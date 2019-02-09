@@ -29,18 +29,29 @@ input_number:
     step: 1
 
 input_boolean:
-  attiva_alza_tapparella:
-    name: attivazione alza tapparella
+  attiva_alza_tapparella_weekend:
+    name: attivazione alza tapparella weekend
+    initial: true
+  attiva_alza_tapparella_workdays:
+    name: attivazione alza tapparella workdays
     initial: true
 input_datetime:
-  alza_tapparella_time:
-    name: Ora alza tapparella cucina
+  alza_tapparella_time_weekend:
+    name: Ora alza tapparella cucina weekend
     has_date: false
     has_time: true
     initial: 07:35
-
+  alza_tapparella_time_workdays:
+    name: Ora alza tapparella cucina workdays
+    has_date: false
+    has_time: true
+    initial: 09:00
+  
 automation:
-  - trigger:
+  - alias: aggiorna slider
+    hide_entity: true
+    initial_state: 'on'
+    trigger:
       platform: mqtt
       topic: "shellies/shellyswitch-55C817/roller/0/pos"
     action:
@@ -48,23 +59,49 @@ automation:
       data_template:
         entity_id: input_number.pos_shelly2
         value: "{{ trigger.payload }}"
-
-  - alias: 'Alza la tapparella alla mattina'
+  - alias: aggiorna shelly
+    hide_entity: true
     initial_state: 'on'
     trigger:
-      platform: template
-      value_template: "{{ states('sensor.time') == (states.input_datetime.alza_tapparella_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+      platform: state
+      entity_id: input_number.pos_shelly2
+    action:
+      - service: mqtt.publish
+        data_template:
+          topic: "shellies/shellyswitch-55C817/roller/0/command/pos"
+          payload_template: "{{ states('input_number.pos_shelly2') | int }}"
+
+  - alias: 'Alza la tapparella'
+    initial_state: 'on'
+    trigger:
+      - platform: template
+        value_template: "{{ states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+      - platform: template
+        value_template: "{{ states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
     condition:
-      - condition: time
-        weekday:
-          - mon
-          - tue
-          - wed
-          - thu
-          - fri
-      - condition: state
-        entity_id: input_boolean.attiva_alza_tapparella
-        state: 'on'
+      - condition: or
+        conditions:
+          - condition: and
+            conditions:
+              - condition: time
+                weekday:
+                  - mon
+                  - tue
+                  - wed
+                  - thu
+                  - fri
+              - condition: state
+                entity_id: input_boolean.attiva_alza_tapparella_workdays
+                state: 'on'
+          - condition: and
+            conditions:
+              - condition: time
+                weekday:
+                  - sat
+                  - sun
+              - condition: state
+                entity_id: input_boolean.attiva_alza_tapparella_weekend
+                state: 'on'
     action:
       - service: mqtt.publish
         data:
