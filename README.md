@@ -10,6 +10,9 @@ Package per gestire l'accensione o lo spegnimento di uno switch.
 ## [Xiaomi Vacuum](Xiaomi-Vacuum/README.md)
 Integrazione di [Xiaomi Vacuum](https://www.mi.com/roomrobot/) in Home Assistant
 
+## [Automazione tapparella con Shelly2](Shelly2-Roller-Shutter-Shelly2/README.md)
+Come "domotizzare" la propria tapparella con [Shelly2](https://shelly.cloud/) e Home Assistant
+
 </br>
 </br>
 <a href="https://www.buymeacoffee.com/Gazzolinho" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>

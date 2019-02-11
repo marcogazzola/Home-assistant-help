@@ -1,8 +1,15 @@
+binary_sensor:
+  - platform: workday
+    country: IT
+    workdays: [mon, tue, wed, thu, fri]
+    
 cover:
   - platform: mqtt
     name: "Tapparella cucina shelly"
-    state_topic: "shellies/shellyswitch-55C817/roller/0"   
-    command_topic: "shellies/shellyswitch-55C817/roller/0/command"  
+    state_topic: "shellies/shellyswitch-55C817/roller/0"
+    command_topic: "shellies/shellyswitch-55C817/roller/0/command"
+    position_topic: "shellies/shellyswitch-55C817/roller/0/pos"
+    set_position_topic: "shellies/shellyswitch-55C817/roller/0/command/pos"
     payload_open: "open"
     payload_close: "close"
     payload_stop: "stop"
@@ -75,30 +82,25 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: template
-        value_template: "{{ states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+        value_template: "{{ states('binary_sensor.workday') == 'off' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
       - platform: template
-        value_template: "{{ states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+        value_template: "{{ states('binary_sensor.workday') == 'on' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
     condition:
       - condition: or
         conditions:
           - condition: and
             conditions:
-              - condition: time
-                weekday:
-                  - mon
-                  - tue
-                  - wed
-                  - thu
-                  - fri
+              - condition: state
+                entity_id: binary_sensor.workday
+                state: 'on' 
               - condition: state
                 entity_id: input_boolean.attiva_alza_tapparella_workdays
                 state: 'on'
           - condition: and
             conditions:
-              - condition: time
-                weekday:
-                  - sat
-                  - sun
+              - condition: state
+                entity_id: binary_sensor.workday
+                state: 'off' 
               - condition: state
                 entity_id: input_boolean.attiva_alza_tapparella_weekend
                 state: 'on'
