@@ -47,12 +47,12 @@ input_datetime:
     name: Ora alza tapparella cucina weekend
     has_date: false
     has_time: true
-    initial: 07:35
+    initial: 09:00
   alza_tapparella_time_workdays:
     name: Ora alza tapparella cucina workdays
     has_date: false
     has_time: true
-    initial: 09:00
+    initial: 07:35
   
 automation:
   - alias: aggiorna slider
@@ -82,16 +82,16 @@ automation:
     initial_state: 'on'
     trigger:
       - platform: template
-        value_template: "{{ states('binary_sensor.workday') == 'off' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+        value_template: "{{ states('binary_sensor.workday_sensor') == 'off' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
       - platform: template
-        value_template: "{{ states('binary_sensor.workday') == 'on' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+        value_template: "{{ states('binary_sensor.workday_sensor') == 'on' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
     condition:
       - condition: or
         conditions:
           - condition: and
             conditions:
               - condition: state
-                entity_id: binary_sensor.workday
+                entity_id: binary_sensor.workday_sensor
                 state: 'on' 
               - condition: state
                 entity_id: input_boolean.attiva_alza_tapparella_workdays
@@ -99,7 +99,7 @@ automation:
           - condition: and
             conditions:
               - condition: state
-                entity_id: binary_sensor.workday
+                entity_id: binary_sensor.workday_sensor
                 state: 'off' 
               - condition: state
                 entity_id: input_boolean.attiva_alza_tapparella_weekend
