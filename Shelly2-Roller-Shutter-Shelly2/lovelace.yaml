@@ -1,16 +1,27 @@
 - type: entities
   entities:
+    - type: custom:slider-entity-row
+      entity: cover.tapparella_cucina_shelly
     - cover.tapparella_cucina_shelly
-    - input_number.pos_shelly2
 - type: entities
   entities:
-    - entity: input_boolean.attiva_alza_tapparella
+    - entity: input_boolean.attiva_alza_tapparella_workdays
+      icon: mdi:window-open
+    - entity: input_boolean.attiva_alza_tapparella_weekend
       icon: mdi:window-open
 - type: conditional
   conditions:
-    - entity: input_boolean.attiva_alza_tapparella
+    - entity: input_boolean.attiva_alza_tapparella_workdays
       state: 'on'
   card:
     type: entities
     entities:
-      - input_datetime.alza_tapparella_time
+      - input_datetime.alza_tapparella_time_workdays
+- type: conditional
+  conditions:
+    - entity: input_boolean.attiva_alza_tapparella_weekend
+      state: 'on'
+  card:
+    type: entities
+    entities:
+      - input_datetime.alza_tapparella_time_weekend
