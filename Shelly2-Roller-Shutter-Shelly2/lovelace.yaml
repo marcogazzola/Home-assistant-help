@@ -3,6 +3,9 @@
     - type: custom:slider-entity-row
       entity: cover.tapparella_cucina_shelly
     - cover.tapparella_cucina_shelly
+# versione con slider-entity-row --> https://github.com/thomasloven/lovelace-slider-entity-row
+    - type: custom:slider-entity-row
+      entity: cover.tapparella_cucina_shelly
 - type: entities
   entities:
     - entity: input_boolean.attiva_alza_tapparella_workdays
