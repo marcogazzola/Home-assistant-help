@@ -13,27 +13,14 @@ cover:
     payload_open: "open"
     payload_close: "close"
     payload_stop: "stop"
-    state_open: "open"
-    state_closed: "close"
+    state_open: 100
+    state_closed: 0
     retain: false
     optimistic: false
     qos: 0
     position_open: 100
     position_closed: 0
-    value_template: '{{ value.x }}'
-
-sensor:
-  - platform: mqtt
-    state_topic: "shellies/shellyswitch-55C817/roller/0/pos"
-    name: "Posizione Tapparella"
-
-input_number:
-  pos_shelly2:
-    name: pos shelly2
-#    initial: 0
-    min: 0
-    max: 100
-    step: 1
+    value_template: '{{ value | int }}'
 
 input_boolean:
   attiva_alza_tapparella_weekend:
@@ -55,55 +42,13 @@ input_datetime:
     initial: 07:35
   
 automation:
-  - alias: aggiorna slider
-    hide_entity: true
-    initial_state: 'on'
-    trigger:
-      platform: mqtt
-      topic: "shellies/shellyswitch-55C817/roller/0/pos"
-    action:
-      service: input_number.set_value
-      data_template:
-        entity_id: input_number.pos_shelly2
-        value: "{{ trigger.payload }}"
-  - alias: aggiorna shelly
-    hide_entity: true
-    initial_state: 'on'
-    trigger:
-      platform: state
-      entity_id: input_number.pos_shelly2
-    action:
-      - service: mqtt.publish
-        data_template:
-          topic: "shellies/shellyswitch-55C817/roller/0/command/pos"
-          payload_template: "{{ states('input_number.pos_shelly2') | int }}"
-
   - alias: 'Alza la tapparella'
     initial_state: 'on'
     trigger:
       - platform: template
-        value_template: "{{ states('binary_sensor.workday_sensor') == 'off' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
+        value_template: "{{ states('input_boolean.attiva_alza_tapparella_weekend') == 'on' and states('binary_sensor.workday_sensor') == 'off' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_weekend.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
       - platform: template
-        value_template: "{{ states('binary_sensor.workday_sensor') == 'on' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
-    condition:
-      - condition: or
-        conditions:
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: binary_sensor.workday_sensor
-                state: 'on' 
-              - condition: state
-                entity_id: input_boolean.attiva_alza_tapparella_workdays
-                state: 'on'
-          - condition: and
-            conditions:
-              - condition: state
-                entity_id: binary_sensor.workday_sensor
-                state: 'off' 
-              - condition: state
-                entity_id: input_boolean.attiva_alza_tapparella_weekend
-                state: 'on'
+        value_template: "{{ states('input_boolean.attiva_alza_tapparella_workdays') == 'on' and states('binary_sensor.workday_sensor') == 'on' and states('sensor.time') == (states.input_datetime.alza_tapparella_time_workdays.attributes.timestamp | int | timestamp_custom('%H:%M', False)) }}"
     action:
       - service: mqtt.publish
         data:
